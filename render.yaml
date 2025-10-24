@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: my-app                # Replace with your project name
+    name: cotton-plant-disease
     env: python
-    pythonVersion: "3.11"      # Set Python version here
+    pythonVersion: 3.11.9
     plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python app.py"  # Change if your entry point is different
+    startCommand: "streamlit run app.py --server.port=$PORT --server.address=0.0.0.0"
