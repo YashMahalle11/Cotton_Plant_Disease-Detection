@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: my-app                # Replace with your project name
+    env: python
+    pythonVersion: "3.11"      # Set Python version here
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python app.py"  # Change if your entry point is different
