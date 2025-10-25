@@ -2,12 +2,12 @@
 import streamlit as st
 import numpy as np
 
-st.set_page_config(page_title="Cotton Disease Detection", page_icon="🌱", layout="centered")
 
 import tensorflow as tf
 from PIL import Image
 import numpy as np
 
+st.set_page_config(page_title="Cotton Disease Detection", page_icon="🌱", layout="centered")
 
 
 print("✅ Streamlit app started successfully!")
