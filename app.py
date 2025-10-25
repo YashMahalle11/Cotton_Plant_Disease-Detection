@@ -1,7 +1,18 @@
+
 import streamlit as st
+import numpy as np
+
+st.set_page_config(page_title="Cotton Disease Detection", page_icon="🌱", layout="centered")
+
 import tensorflow as tf
 from PIL import Image
 import numpy as np
+
+
+
+print("✅ Streamlit app started successfully!")
+st.write("App is running successfully — UI loaded.")
+
 
 # -------------------------------
 # MUST be the first Streamlit command
