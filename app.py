@@ -1,32 +1,37 @@
-
 import streamlit as st
 import numpy as np
-
-
 import tensorflow as tf
 from PIL import Image
-import numpy as np
-
-st.set_page_config(page_title="Cotton Disease Detection", page_icon="🌱", layout="centered")
-
-
-print("✅ Streamlit app started successfully!")
-st.write("App is running successfully — UI loaded.")
-
+import os
 
 # -------------------------------
-# MUST be the first Streamlit command
+# Must be the first Streamlit command
 # -------------------------------
 st.set_page_config(page_title="Cotton Disease Detection", page_icon="🌱", layout="centered")
+
+# -------------------------------
+# App title and description
+# -------------------------------
+st.title("🌱 Cotton Disease Detection (ResNet-50)")
+st.markdown(
+    """
+    Upload a cotton leaf image, and the model will predict the most likely disease.  
+    The model is based on **ResNet-50** trained on a cotton leaf dataset.
+    """
+)
 
 # -------------------------------
 # Load and cache the trained model
 # -------------------------------
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model("resnet50.h5", compile=False)
+    BASE_DIR = os.path.dirname(__file__)
+    MODEL_PATH = os.path.join(BASE_DIR, "resnet50.h5")  # Ensure file is in project root
+    return tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 model = load_model()
+
+st.write("Model output shape:", model.output_shape)
 
 # -------------------------------
 # Define the disease class labels
@@ -41,37 +46,21 @@ class_names = [
 ]
 
 # -------------------------------
-# Streamlit UI
-# -------------------------------
-st.title("🌱 Cotton Disease Detection (ResNet-50)")
-st.markdown(
-    """
-    Upload a cotton leaf image, and the model will predict the most likely disease.  
-    The model is based on **ResNet-50** trained on cotton leaf dataset.
-    """
-)
-
-# -------------------------------
 # File uploader
 # -------------------------------
 uploaded_file = st.file_uploader("📂 Upload a cotton leaf image", type=["jpg", "jpeg", "png"])
-st.write("Model output shape:", model.output_shape)
 
 if uploaded_file:
     # Load and display image
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Uploaded Image", use_column_width=True)
 
-    # -------------------------------
     # Preprocess image
-    # -------------------------------
-    img = image.resize((224, 224))  # ResNet-50 expects 224×224
+    img = image.resize((224, 224))  # ResNet-50 expects 224x224
     img_array = np.array(img, dtype=np.float32) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
-    # -------------------------------
     # Prediction
-    # -------------------------------
     preds = model.predict(img_array)[0]
     top_idx = np.argmax(preds)
 
